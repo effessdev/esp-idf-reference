@@ -1,13 +1,14 @@
-# ESP-IDF reference
+# ESP-IDF Portfolio
 
-This is a set of ESP-IDF examples for reference, organized into two folders:
+This repository contains a collection of ESP-IDF projects that serve as both my portfolio and a reference for future projects.
 
-- [Examples](examples/): Each example is a separate ESP-IDF project. For large examples.
-- [Single Project Examples](single-project-examples/): Multiple examples in a single project. For simple examples only.
+Unlike regular projects, the focus here is on **learning rather than shipping**. Each project explores specific concepts, features, or techniques within the ESP-IDF ecosystem.
 
-## Getting started
+Every project also includes its own README documenting how it was built, including **how AI tools were used throughout the development process**.
 
-Check out the following chapters from my [ESP-IDF Course](https://effessdev.github.io/esp-idf):
+## Want to Try These Projects Yourself?
+
+Check out the following chapters from my [ESP-IDF Course](https://effessdev.github.io/esp-idf) to learn how to set up your development environment and create, build, and flash projects to your ESP32:
 
 - [Installation](https://effessdev.github.io/esp-idf/getting-started/install/)
-- [Your first project](https://effessdev.github.io/esp-idf/getting-started/first-project/)
+- [Your First Project](https://effessdev.github.io/esp-idf/getting-started/first-project/)
