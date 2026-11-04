@@ -1,0 +1,8 @@
+# Enable Bluetooth
+CONFIG_BT_ENABLED=y
+
+# Use NimBLE host
+CONFIG_BT_NIMBLE_ENABLED=y
+
+# BLE only (disable Bluetooth Classic)
+CONFIG_BT_CLASSIC_ENABLED=n

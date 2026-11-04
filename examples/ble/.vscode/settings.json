@@ -20,7 +20,7 @@
     }
   },
   "idf.openOcdConfigs": ["board/esp32-wrover-kit-3.3v.cfg"],
-  "idf.currentSetup": "C:\\esp\\v6.0.2\\esp-idf",
+  "idf.currentSetup": "C:\\esp\\v6.0.3\\esp-idf",
   "idf.customExtraVars": {
     "IDF_TARGET": "esp32"
   },
@@ -31,5 +31,6 @@
     "--compile-commands-dir=c:\\Users\\fasee\\Temp\\repos\\esp-idf-examples\\examples\\ble\\build"
   ],
   "idf.flashType": "UART",
-  "idf.port": "COM3"
+  "idf.port": "COM3",
+  "idf.portWin": "COM3"
 }
