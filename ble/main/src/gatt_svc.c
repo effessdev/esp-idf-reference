@@ -3,14 +3,21 @@
  *
  * SPDX-License-Identifier: Unlicense OR CC0-1.0
  */
-/* Includes */
+
+/* ========================================================================== *
+ * INCLUDES
+ * ========================================================================== */
+
 #include "gatt_svc.h"
 #include "common.h"
 #include "heart_rate.h"
 #include "host/ble_uuid.h"
 #include <stdint.h>
 
-/* Private function declarations */
+/* ========================================================================== *
+ * PRIVATE FUNCTION DECLARATIONS
+ * ========================================================================== */
+
 static int heart_rate_chr_access(uint16_t conn_handle, uint16_t attr_handle,
                                  struct ble_gatt_access_ctxt *ctxt, void *arg);
 static int led_chr_access(uint16_t conn_handle, uint16_t attr_handle,
@@ -19,7 +26,10 @@ static int effessdev_log_chr_access(uint16_t conn_handle, uint16_t attr_handle,
                                     struct ble_gatt_access_ctxt *ctxt,
                                     void *arg);
 
-/* Private variables */
+/* ========================================================================== *
+ * PRIVATE VARIABLES
+ * ========================================================================== */
+
 /* Heart rate service */
 static const ble_uuid16_t heart_rate_svc_uuid = BLE_UUID16_INIT(0x180D);
 
@@ -91,7 +101,22 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
     },
 };
 
-/* Private functions */
+/* ========================================================================== *
+ * PRIVATE FUNCTIONS
+ * ========================================================================== */
+
+/* ctxt->om in characteristic access callbacks
+ * *******************************************
+ *
+ * 1. Handling a Write Operation (when ctxt->op ==
+ * BLE_GATT_ACCESS_OP_WRITE_CHR): the incoming payload is contained inside
+ * ctxt->om.
+ *
+ * 2. Handling a Read Operation (when ctxt->op == BLE_GATT_ACCESS_OP_READ_CHR):
+ * ctxt->om is used to append the data you want to send back as a response using
+ * NimBLE's os_mbuf_append function.
+ */
+
 static int heart_rate_chr_access(uint16_t conn_handle, uint16_t attr_handle,
                                  struct ble_gatt_access_ctxt *ctxt, void *arg) {
   /* Local variables */
@@ -226,7 +251,10 @@ error:
   return BLE_ATT_ERR_UNLIKELY;
 }
 
-/* Public functions */
+/* ========================================================================== *
+ * PUBLIC FUNCTIONS
+ * ========================================================================== */
+
 void send_heart_rate_indication(void) {
   if (heart_rate_ind_status && heart_rate_chr_conn_handle_inited) {
     ble_gatts_indicate(heart_rate_chr_conn_handle, heart_rate_chr_val_handle);
