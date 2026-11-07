@@ -5,6 +5,7 @@
  */
 /* Includes */
 #include "common.h"
+#include "host/ble_sm.h"
 #include "gap.h"
 #include "gatt_svc.h"
 #include "heart_rate.h"
@@ -40,6 +41,13 @@ static void nimble_host_config_init(void) {
   ble_hs_cfg.sync_cb = on_stack_sync;
   ble_hs_cfg.gatts_register_cb = gatt_svr_register_cb;
   ble_hs_cfg.store_status_cb = ble_store_util_status_rr;
+
+  /* Security Manager: Just Works pairing with bonding, without MITM. */
+  ble_hs_cfg.sm_io_cap = BLE_HS_IO_NO_INPUT_OUTPUT;
+  ble_hs_cfg.sm_bonding = 1;
+  ble_hs_cfg.sm_mitm = 0;
+  ble_hs_cfg.sm_our_key_dist |= BLE_SM_PAIR_KEY_DIST_ENC;
+  ble_hs_cfg.sm_their_key_dist |= BLE_SM_PAIR_KEY_DIST_ENC;
 
   /* Store host configuration */
   ble_store_config_init();

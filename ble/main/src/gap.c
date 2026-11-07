@@ -173,6 +173,12 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
       /* Print connection descriptor */
       print_conn_desc(&desc);
 
+      /* Start pairing and encryption; bonding keys are stored by NimBLE. */
+      rc = ble_gap_security_initiate(event->connect.conn_handle);
+      if (rc != 0) {
+        ESP_LOGW(TAG, "could not initiate BLE security, error code: %d", rc);
+      }
+
       /* Try to update connection parameters */
       struct ble_gap_upd_params params = {.itvl_min = desc.conn_itvl,
                                           .itvl_max = desc.conn_itvl,
@@ -217,6 +223,20 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
       return rc;
     }
     print_conn_desc(&desc);
+    return rc;
+
+  /* Encryption change event */
+  case BLE_GAP_EVENT_ENC_CHANGE:
+    if (event->enc_change.status == 0) {
+      ESP_LOGI(TAG, "BLE link encryption enabled");
+      rc = ble_gap_conn_find(event->enc_change.conn_handle, &desc);
+      if (rc == 0) {
+        print_conn_desc(&desc);
+      }
+    } else {
+      ESP_LOGE(TAG, "BLE link encryption failed, status=%d",
+               event->enc_change.status);
+    }
     return rc;
 
   /* Advertising complete event */

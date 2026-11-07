@@ -65,7 +65,8 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
              {/* Heart rate characteristic */
               .uuid = &heart_rate_chr_uuid.u,
               .access_cb = heart_rate_chr_access,
-              .flags = BLE_GATT_CHR_F_READ | BLE_GATT_CHR_F_INDICATE,
+              .flags = BLE_GATT_CHR_F_READ | BLE_GATT_CHR_F_READ_ENC |
+                       BLE_GATT_CHR_F_INDICATE,
               .val_handle = &heart_rate_chr_val_handle},
              {
                  0, /* No more characteristics in this service. */
@@ -79,7 +80,8 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
             (struct ble_gatt_chr_def[]){/* LED characteristic */
                                         {.uuid = &led_chr_uuid.u,
                                          .access_cb = led_chr_access,
-                                         .flags = BLE_GATT_CHR_F_WRITE,
+                                         .flags = BLE_GATT_CHR_F_WRITE |
+                                                  BLE_GATT_CHR_F_WRITE_ENC,
                                          .val_handle = &led_chr_val_handle},
                                         {0}},
     },
@@ -92,7 +94,8 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
                 /* EffessDev log characteristic */
                 {.uuid = &effessdev_log_chr_uuid.u,
                  .access_cb = effessdev_log_chr_access,
-                 .flags = BLE_GATT_CHR_F_WRITE,
+                 .flags = BLE_GATT_CHR_F_WRITE |
+                          BLE_GATT_CHR_F_WRITE_ENC,
                  .val_handle = &effessdev_log_chr_val_handle},
                 {0}},
     },
@@ -257,8 +260,21 @@ error:
 
 void send_heart_rate_indication(void) {
   if (heart_rate_ind_status && heart_rate_chr_conn_handle_inited) {
-    ble_gatts_indicate(heart_rate_chr_conn_handle, heart_rate_chr_val_handle);
-    ESP_LOGI(TAG, "heart rate indication sent!");
+    struct ble_gap_conn_desc desc;
+    int rc = ble_gap_conn_find(heart_rate_chr_conn_handle, &desc);
+
+    /* NimBLE does not enforce encryption on indications via GATT flags. */
+    if (rc != 0 || !desc.sec_state.encrypted) {
+      return;
+    }
+
+    rc = ble_gatts_indicate(heart_rate_chr_conn_handle,
+                            heart_rate_chr_val_handle);
+    if (rc == 0) {
+      ESP_LOGI(TAG, "heart rate indication sent!");
+    } else {
+      ESP_LOGW(TAG, "heart rate indication failed, error code: %d", rc);
+    }
   }
 }
 

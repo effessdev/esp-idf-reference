@@ -6,3 +6,18 @@ CONFIG_BT_NIMBLE_ENABLED=y
 
 # BLE only (disable Bluetooth Classic)
 CONFIG_BT_CLASSIC_ENABLED=n
+
+# Enable BLE Security Manager
+CONFIG_BT_NIMBLE_SECURITY_ENABLE=y
+
+# Enable LE link encryption
+CONFIG_BT_NIMBLE_LL_CFG_FEAT_LE_ENCRYPTION=y
+
+# Enable Secure Connections
+CONFIG_BT_NIMBLE_SM_SC=y
+
+# Enable persistent bonding keys in NVS
+CONFIG_BT_NIMBLE_NVS_PERSIST=y
+
+# Maximum number of stored bonds
+CONFIG_BT_NIMBLE_MAX_BONDS=3
