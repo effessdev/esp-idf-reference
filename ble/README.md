@@ -8,7 +8,7 @@ No AI was used for generating the code. AI was only used for learning purposes.
 
 For learning the concepts, I used the [ESP-IDF BLE documentation](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/ble/get-started/ble-introduction.html) provided by Espressif Systems.
 
-BLE rqeuires a lot of boilerplate. So I copied the [NimBLE_GATT_Server](https://github.com/espressif/esp-idf/tree/v6.1/examples/bluetooth/ble_get_started/nimble/NimBLE_GATT_Server) official example, and adapted it as per my needs.
+BLE rqeuires a lot of boilerplate. So I copied the [NimBLE_GATT_Server](https://github.com/espressif/esp-idf/tree/v6.1/examples/bluetooth/ble_get_started/nimble/NimBLE_GATT_Server) official example, and adapted it as per my needs. `gap.c` is full boilerplate.
 
 ## Menuconfig
 
